@@ -1,0 +1,2 @@
+#tính số ngày giữa 2 cột trong M Query
+if [Group Last Day] is null then Duration.Days((Date.From(DateTime.LocalNow())-[Group Joining Date]))/365 else Duration.Days([Group Last Day]-[Group Joining Date])/365
