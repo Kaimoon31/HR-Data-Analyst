@@ -1,2 +1,16 @@
 #tính số ngày giữa 2 cột trong M Query
 if [Group Last Day] is null then Duration.Days((Date.From(DateTime.LocalNow())-[Group Joining Date]))/365 else Duration.Days([Group Last Day]-[Group Joining Date])/365
+
+# tính số headcount theo thời gian
+Employees At End of Period = 
+VAR MaxDate = MAX ( 'Date'[Date] )
+Var MinDate = Min ('Date'[Date])
+Var Empcnt =
+    CALCULATE (
+        COUNTROWS (
+            CALCULATETABLE ('HR DATA', 'HR DATA'[DateofHire] <= MaxDate, ALL ( 'Date' ))),
+                              ISBLANK('HR DATA'[DateofTermination]) || 'HR DATA'[DateofTermination] > MaxDate)
+
+
+Return
+if(ISBLANK(Empcnt),0,Empcnt) 
