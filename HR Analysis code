@@ -8,9 +8,37 @@ Var MinDate = Min ('Date'[Date])
 Var Empcnt =
     CALCULATE (
         COUNTROWS (
-            CALCULATETABLE ('HR DATA', 'HR DATA'[DateofHire] <= MaxDate, ALL ( 'Date' ))),
-                              ISBLANK('HR DATA'[DateofTermination]) || 'HR DATA'[DateofTermination] > MaxDate)
+            CALCULATETABLE ('Total EE', 'Total EE'[Group Joining Date]<= MaxDate, ALL ( 'Date' ))),
+                              ISBLANK('Total EE'[Group Last Day]) || 'Total EE'[Group Last Day]> MaxDate)
 
 
 Return
-if(ISBLANK(Empcnt),0,Empcnt) 
+if(ISBLANK(Empcnt),0,Empcnt)  
+
+#Tính số resignation
+Resingation
+No. Resignee = 
+VAR MaxDate = MAX ( 'Date'[Date] )
+Var MinDate = Min ('Date'[Date])
+Return
+                  (COUNTROWS( CALCULATETABLE('Total EE', 'Total EE'[Group Last Day]>= MinDate))
+)
+
+#Tính headcount đầu kỳ
+HC đầu kỳ = 
+var mindate = MIN('Date'[Date])
+Return
+CALCULATE(Metrics[# Employees At End of Period],'Date'[Date] = mindate)
+
+#tính AVG Headcount
+AVG HC = 
+var mindate = MIN('Date'[Date])
+var maxdate = MAX('Date'[Date])
+Var AVGdaunam = CALCULATE(Metrics[# Employees At End of Period],'Date'[Date] = mindate)
+Var AVGcuoinam = CALCULATE(Metrics[# Employees At End of Period],'Date'[Date]= maxdate)
+Return
+DIVIDE(AVGdaunam+AVGcuoinam,2)
+
+# Tính số turnover rate
+Turnover rate = DIVIDE(Metrics[No. Resignee],Metrics[AVG HC])
+
