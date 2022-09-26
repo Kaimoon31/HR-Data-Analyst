@@ -42,3 +42,10 @@ DIVIDE(AVGdaunam+AVGcuoinam,2)
 # Tính số turnover rate
 Turnover rate = DIVIDE(Metrics[No. Resignee],Metrics[AVG HC])
 
+
+#sử dụng text.contain + list.contain để check điều kiện trong list danh sách
+if List.AnyTrue(
+    List.Transform({"S14", "S15", "N"},(substring) => Text.Contains([Shift], substring))) = true and Text.Contains([Shift],"S") = true then "Night" else 
+    if Text.Contains([Shift],"S") = false then "Off" else "Day"
+   
+   
