@@ -49,3 +49,8 @@ if List.AnyTrue(
     if Text.Contains([Shift],"S") = false then "Off" else "Day"
    
    
+#cumulative (Running total) sau khi count(measure)
+số người hơn 200h tăng theo tháng = CALCULATE(
+COUNTROWS(
+    FILTER(
+        SUMMARIZE('Fact_OT Hours', 'Fact_OT Hours'[Staff ID]), Metrics[Sum OT hours] >200)),FILTER(ALLSELECTED('Date'),'Date'[Date]<=MAX('Date'[Date])))
